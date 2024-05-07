@@ -1,0 +1,19 @@
+#To create a network
+docker network create spring-mysql-network
+
+#To create mysql container with out network
+docker run -d --network spring-mysql-network --name mysql-container -e MYSQL_ROOT_PASSWORD=jesh mysql:latest
+
+
+#Make sure you change the application properties according to the name of the container of the mysql
+spring.datasource.url=jdbc:mysql://mysql-container:3306/recipeCornerDB
+spring.datasource.username=root
+spring.datasource.password=jesh
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+#Before running create the database in your mysql container
+
+#Build the Docker Image of the backend and run the image
+docker run -d --network spring-mysql-network -p 8080:8080  --name recipe-corner-container-backend recipe-corner-backend
+
+#Access the Swagger UI from the browser for PORT:8080
